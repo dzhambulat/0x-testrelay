@@ -1,25 +1,43 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import {getProviderEngine} from './utils/provider_engine';
 import './App.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.makeSellOrder = this.makeSellOrder.bind(this);
+    this.makeBuyOrder = this.makeBuyOrder.bind(this);
+
+    if(window.web3) {
+      getProviderEngine();
+    }
+
+  }
+  makeSellOrder() {
+    alert('fff');
+  }
+  makeBuyOrder() {
+    alert('buy');
+  }
+  handleChange(event) {
+    this.setState({signedOrder: event.target.value});
+  }
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        
+        { !window.web3 &&
+          <h2>
+            You have to use Metamask
+          </h2>
+        }
+        <button onClick={this.makeSellOrder}>Create Sell Order</button> 
+
+        <input type="text" value={this.state.signedOrder} onChange={this.handleChange}/>
+        <button onClick={this.makeBuyOrder}>Create Buy Order</button> 
       </div>
     );
   }
