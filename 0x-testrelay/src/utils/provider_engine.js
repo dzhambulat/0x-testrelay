@@ -1,4 +1,5 @@
 import { Web3ProviderEngine } from '0x.js';
+import { getContractAddressesForNetworkOrThrow } from '@0x/contract-addresses';
 import {SignerSubprovider} from '@0x/subproviders';
 
 export const ROPSTEN_NETWORK_ID = 3;
@@ -13,4 +14,8 @@ export const getProviderEngine = ()=>{
     pe.start();
 
     return pe;
+}
+
+export const getContractAddress = (networkId) => {
+    return getContractAddressesForNetworkOrThrow(networkId);
 }

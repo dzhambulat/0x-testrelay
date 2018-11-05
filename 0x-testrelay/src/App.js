@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {getProviderEngine} from './utils/provider_engine';
+import {getProviderEngine, getContractAddress, ROPSTEN_CONFIGS} from './utils/provider_engine';
+import { Web3Wrapper } from '@0x/web3-wrapper';
 import './App.css';
 
 class App extends Component {
@@ -12,7 +13,8 @@ class App extends Component {
     this.makeBuyOrder = this.makeBuyOrder.bind(this);
 
     if(window.web3) {
-      getProviderEngine();
+      const pe = getProviderEngine();
+      let _0xcontract = getContractAddress(ROPSTEN_CONFIGS.networkId);
     }
 
   }
