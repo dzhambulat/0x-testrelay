@@ -72,10 +72,9 @@ class App extends Component {
 
   }
   async makeSellOrder() {
-    alert('dd');
-
+    console.log(this.web3Wrapper);
     const [leftMaker] = await this.web3Wrapper.getAvailableAddressesAsync();
-    alert(leftMaker);
+    console.log(leftMaker);
     const makerAssetAmount = Web3Wrapper.toBaseUnitAmount(new BigNumber(10), DECIMALS);
     const takerAssetAmount = Web3Wrapper.toBaseUnitAmount(new BigNumber(0.4), DECIMALS);
     const makerAssetData = assetDataUtils.encodeERC20AssetData(this.zrxToken);
@@ -105,7 +104,7 @@ class App extends Component {
     const leftOrderHashHex = orderHashUtils.getOrderHashHex(leftOrder);
     const leftOrderSignature = await signatureUtils.ecSignHashAsync(this.providerEngine, leftOrderHashHex, leftMaker);
     const leftSignedOrder = { ...leftOrder, signature: leftOrderSignature };
-    alert(JSON.stringify(leftSignedOrder));
+    console.log(leftSignedOrder);
   }
   makeBuyOrder() {
 
