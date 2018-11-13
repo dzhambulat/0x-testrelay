@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import {getProviderEngine, getContractAddress, ROPSTEN_CONFIGS} from './utils/provider_engine';
 import { ContractAddresses, getContractAddressesForNetworkOrThrow } from '@0x/contract-addresses';
@@ -33,10 +34,12 @@ class App extends Component {
           // Request account access if needed
           await window.ethereum.enable();
           if(window.web3) {
-            
+            console.log('ddd');
             const pe = getProviderEngine();
+            pe.start();
             this.providerEngine = pe;
             this._0xcontract = getContractAddress(ROPSTEN_CONFIGS.networkId);
+            console.log(this._0xcontract)
             const addresses = getContractAddressesForNetworkOrThrow(ROPSTEN_CONFIGS.networkId);
             this.zrxToken = addresses.zrxToken;
             this.etherToken = addresses.etherToken;
@@ -73,38 +76,50 @@ class App extends Component {
   }
   async makeSellOrder() {
     console.log(this.web3Wrapper);
-    const [leftMaker] = await this.web3Wrapper.getAvailableAddressesAsync();
-    console.log(leftMaker);
-    const makerAssetAmount = Web3Wrapper.toBaseUnitAmount(new BigNumber(10), DECIMALS);
-    const takerAssetAmount = Web3Wrapper.toBaseUnitAmount(new BigNumber(0.4), DECIMALS);
-    const makerAssetData = assetDataUtils.encodeERC20AssetData(this.zrxToken);
-    const takerAssetData = assetDataUtils.encodeERC20AssetData(this.etherToken);
+    try {
+     // const [leftMaker] = await this.web3Wrapper.getAvailableAddressesAsync();
+     const p = this.web3Wrapper.getAvailableAddressesAsync().then((a)=>{
+       alert(a);
+       console.log(a);
+     },(e)=>{
+       alert(e);
+     })
+    console.log(p);
+     /* const makerAssetAmount = Web3Wrapper.toBaseUnitAmount(new BigNumber(10), DECIMALS);
+      const takerAssetAmount = Web3Wrapper.toBaseUnitAmount(new BigNumber(0.4), DECIMALS);
+      const makerAssetData = assetDataUtils.encodeERC20AssetData(this.zrxToken);
+      const takerAssetData = assetDataUtils.encodeERC20AssetData(this.etherToken);
+  
+      const leftMakerZRXApprovalTxHash = await this.contractWrappers.erc20Token.setUnlimitedProxyAllowanceAsync(
+        this.zrxToken,
+        leftMaker,
+      );
+  
+      const leftOrder = {
+        exchangeAddress: this._0xcontract,
+        makerAddress: leftMaker,
+        takerAddress: NULL_ADDRESS,
+        senderAddress: NULL_ADDRESS,
+        feeRecipientAddress: NULL_ADDRESS,
+        expirationTimeSeconds: 400,
+        salt: generatePseudoRandomSalt(),
+        makerAssetAmount,
+        takerAssetAmount,
+        makerAssetData,
+        takerAssetData,
+        makerFee: ZERO,
+        takerFee: ZERO,
+      };
+  
+      const leftOrderHashHex = orderHashUtils.getOrderHashHex(leftOrder);
+      const leftOrderSignature = await signatureUtils.ecSignHashAsync(this.providerEngine, leftOrderHashHex, leftMaker);
+      const leftSignedOrder = { ...leftOrder, signature: leftOrderSignature };
+      console.log(leftSignedOrder);*/
+    }
+    catch (e) {
+      console.log(e);
+    }
 
-    const leftMakerZRXApprovalTxHash = await this.contractWrappers.erc20Token.setUnlimitedProxyAllowanceAsync(
-      this.zrxToken,
-      leftMaker,
-    );
-
-    const leftOrder = {
-      exchangeAddress: this._0xcontract,
-      makerAddress: leftMaker,
-      takerAddress: NULL_ADDRESS,
-      senderAddress: NULL_ADDRESS,
-      feeRecipientAddress: NULL_ADDRESS,
-      expirationTimeSeconds: 400,
-      salt: generatePseudoRandomSalt(),
-      makerAssetAmount,
-      takerAssetAmount,
-      makerAssetData,
-      takerAssetData,
-      makerFee: ZERO,
-      takerFee: ZERO,
-    };
-
-    const leftOrderHashHex = orderHashUtils.getOrderHashHex(leftOrder);
-    const leftOrderSignature = await signatureUtils.ecSignHashAsync(this.providerEngine, leftOrderHashHex, leftMaker);
-    const leftSignedOrder = { ...leftOrder, signature: leftOrderSignature };
-    console.log(leftSignedOrder);
   }
   makeBuyOrder() {
 

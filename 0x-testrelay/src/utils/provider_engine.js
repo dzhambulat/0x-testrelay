@@ -1,4 +1,4 @@
-import { Web3ProviderEngine } from '0x.js';
+import  ProviderEngine  from 'web3-provider-engine';
 import { getContractAddressesForNetworkOrThrow } from '@0x/contract-addresses';
 import {SignerSubprovider} from '@0x/subproviders';
 
@@ -9,9 +9,9 @@ export const ROPSTEN_CONFIGS = {
 };
 
 export const getProviderEngine = ()=>{
-    const pe = new Web3ProviderEngine();
+    const pe = new ProviderEngine();
+    console.log(window.web3);
     pe.addProvider(new SignerSubprovider(window.web3.currentProvider));
-    pe.start();
 
     return pe;
 }
